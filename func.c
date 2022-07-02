@@ -6,8 +6,40 @@
     type var; \
     memset(&var, 0, sizeof(var))
 
-// 按下鼠标左键
-void mleft(int num, int time) {
+// 按下左键
+void left_down(void) {
+    NEW_VAR(INPUT, input);
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+    SendInput(1, &input, sizeof(input));
+}
+
+// 按下右键
+void right_down(void) {
+    NEW_VAR(INPUT, input);
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+    SendInput(1, &input, sizeof(input));
+}
+
+// 松开左键
+void left_up(void) {
+    NEW_VAR(INPUT, input);
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+    SendInput(1, &input, sizeof(input));
+}
+
+// 松开右键
+void right_up(void) {
+    NEW_VAR(INPUT, input);
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+    SendInput(1, &input, sizeof(input));
+}
+
+// 左键点击若干次
+void left_click_n(int num, int time) {
     NEW_VAR(INPUT, input);
     input.type = INPUT_MOUSE;
     while (num--) {
@@ -19,8 +51,8 @@ void mleft(int num, int time) {
     }
 }
 
-// 按下鼠标右键
-void mright(int num, int time) {
+// 右键点击若干次
+void right_click_n(int num, int time) {
     NEW_VAR(INPUT, input);
     input.type = INPUT_MOUSE;
     while (num--) {
@@ -32,8 +64,8 @@ void mright(int num, int time) {
     }
 }
 
-// 增加鼠标坐标
-void mmove(int x, int y) {
+// 移动鼠标 (增加坐标)
+void mouse_move(int x, int y) {
     NEW_VAR(INPUT, input);
     input.type = INPUT_MOUSE;
     input.mi.dx = x;
@@ -43,7 +75,7 @@ void mmove(int x, int y) {
 }
 
 // 按下键盘按键
-void kpress(int key, int num, int time) {
+void key_press(int key, int num, int time) {
     NEW_VAR(INPUT, input);
     input.type = INPUT_KEYBOARD;
     input.ki.wVk = key;
@@ -59,4 +91,36 @@ void kpress(int key, int num, int time) {
 // 等待一段时间
 void wait(int time) {
     Sleep(time);
+}
+
+// 读取命令参数 (必须在读取命令名后使用)
+void get_args(FILE *fp, int *args, int arg_num) {
+    if (arg_num != 0) {
+        for (int i = 0; i < arg_num; i++) {
+            fscanf(fp, "%d", args + i);
+        }
+    }
+}
+
+// 输出命令和参数
+void print_cmd_and_args(char *cmd, int *args, int arg_num) {
+    printf("%s ", cmd);
+    if (arg_num != 0) {
+        for (int i = 0; i < arg_num; i++) {
+            printf("%d ", args[i]);
+        }
+    }
+}
+
+// 获取文件行数
+int get_line_num(FILE *fp) {
+    int ch; // int: 其值可能为 EOF
+    int count = 1;
+    while ((ch = fgetc(fp)) != EOF) {
+        if (ch == '\n') {
+            count++;
+        }
+    }
+    rewind(fp); // 很重要
+    return count;
 }
