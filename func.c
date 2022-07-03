@@ -6,22 +6,6 @@
     type var; \
     memset(&var, 0, sizeof(var))
 
-// 按下左键
-void left_down(void) {
-    NEW_VAR(INPUT, input);
-    input.type = INPUT_MOUSE;
-    input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-    SendInput(1, &input, sizeof(input));
-}
-
-// 按下右键
-void right_down(void) {
-    NEW_VAR(INPUT, input);
-    input.type = INPUT_MOUSE;
-    input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
-    SendInput(1, &input, sizeof(input));
-}
-
 // 松开左键
 void left_up(void) {
     NEW_VAR(INPUT, input);
@@ -30,11 +14,11 @@ void left_up(void) {
     SendInput(1, &input, sizeof(input));
 }
 
-// 松开右键
-void right_up(void) {
+// 按下左键
+void left_down(void) {
     NEW_VAR(INPUT, input);
     input.type = INPUT_MOUSE;
-    input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+    input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
     SendInput(1, &input, sizeof(input));
 }
 
@@ -51,6 +35,22 @@ void left_click_n(int num, int time) {
     }
 }
 
+// 松开右键
+void right_up(void) {
+    NEW_VAR(INPUT, input);
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+    SendInput(1, &input, sizeof(input));
+}
+
+// 按下右键
+void right_down(void) {
+    NEW_VAR(INPUT, input);
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+    SendInput(1, &input, sizeof(input));
+}
+
 // 右键点击若干次
 void right_click_n(int num, int time) {
     NEW_VAR(INPUT, input);
@@ -65,7 +65,7 @@ void right_click_n(int num, int time) {
 }
 
 // 移动鼠标 (增加坐标)
-void mouse_move(int x, int y) {
+void move(int x, int y) {
     NEW_VAR(INPUT, input);
     input.type = INPUT_MOUSE;
     input.mi.dx = x;
@@ -75,7 +75,7 @@ void mouse_move(int x, int y) {
 }
 
 // 按下键盘按键
-void key_press(int key, int num, int time) {
+void keyboard(int key, int num, int time) {
     NEW_VAR(INPUT, input);
     input.type = INPUT_KEYBOARD;
     input.ki.wVk = key;
@@ -102,9 +102,8 @@ void get_args(FILE *fp, int *args, int arg_num) {
     }
 }
 
-// 输出命令和参数
-void print_cmd_and_args(char *cmd, int *args, int arg_num) {
-    printf("%s ", cmd);
+// 输出命令参数
+void print_args(int *args, int arg_num) {
     if (arg_num != 0) {
         for (int i = 0; i < arg_num; i++) {
             printf("%d ", args[i]);
