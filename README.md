@@ -1,4 +1,4 @@
-﻿# Automand - v2
+# Automand - v2
 
 ## 快速开始
 
@@ -42,4 +42,4 @@
 
 ## 附录
 
-* [Windows Virtual-Key](https://dwz.date/fmFy): 对应键盘上的按键
+* [Windows Virtual-Key Codes](https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes)
