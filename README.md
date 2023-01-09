@@ -1,4 +1,6 @@
-# Automand - v2
+# automand
+
+Windows 自动化工具 命令行界面
 
 ## 快速开始
 
